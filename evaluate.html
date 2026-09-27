@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Evaluate Assignment</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f6f8ff;
+            color: #172033;
+        }
+
+        .navbar {
+            height: 72px;
+            background: white;
+            display: flex;
+            align-items: center;
+            padding: 0 8%;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.07);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #315bea;
+        }
+
+        .container {
+            min-height: calc(100vh - 72px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .upload-box {
+            width: 600px;
+            background: white;
+            padding: 45px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+        }
+
+        .upload-icon {
+            width: 80px;
+            height: 80px;
+            margin: auto auto 20px;
+            border-radius: 18px;
+            background: #eef2ff;
+            color: #315bea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .description {
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .file-box {
+            border: 2px dashed #cbd5e1;
+            padding: 35px 20px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+        }
+
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+
+        .button {
+            border: none;
+            background: #315bea;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: #2448c7;
+        }
+
+        .note {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <nav class="navbar">
+
+        <div class="logo">
+            AI Assignment Evaluator
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+
+        <div class="upload-box">
+
+
+            <div class="upload-icon">
+                PDF
+            </div>
+
+
+            <h1>
+                Evaluate Assignment
+            </h1>
+
+
+            <p class="description">
+
+                Upload a student assignment PDF.
+                The system will process the document,
+                extract the handwritten answer and
+                perform AI-assisted evaluation.
+
+            </p>
+
+
+            <form
+                action="/upload"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+
+                <div class="file-box">
+
+                    <input
+                        type="file"
+                        name="pdf"
+                        accept=".pdf"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="button"
+                >
+                    Upload & Evaluate
+                </button>
+
+
+            </form>
+
+
+            <p class="note">
+                Supported format: PDF only
+            </p>
+
+
+        </div>
+
+
+    </main>
+
+
+</body>
+
+</html>

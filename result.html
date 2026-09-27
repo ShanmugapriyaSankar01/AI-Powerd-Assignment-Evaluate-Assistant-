@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Evaluation Result</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7ff;
+            margin: 0;
+            padding: 40px 20px;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: auto;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            color: #315bea;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            margin-bottom: 10px;
+        }
+
+        .filename {
+            color: #64748b;
+        }
+
+        .status {
+            background: #ecfdf5;
+            color: #047857;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .text-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            white-space: pre-wrap;
+            line-height: 1.7;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .score-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .score-card {
+            flex: 1;
+            background: #eef2ff;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .score {
+            font-size: 35px;
+            font-weight: bold;
+            color: #315bea;
+            margin-top: 10px;
+        }
+
+        .concept-box {
+            margin-top: 20px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .concept-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .concept {
+            background: #eef2ff;
+            color: #315bea;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .no-concept {
+            color: #64748b;
+        }
+
+        .note {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff7ed;
+            color: #9a3412;
+            border-radius: 8px;
+            line-height: 1.6;
+        }
+
+        .workflow {
+            line-height: 2;
+            color: #475569;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #315bea;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: #2448c5;
+        }
+
+        .secondary-btn {
+            background: #64748b;
+        }
+
+        .secondary-btn:hover {
+            background: #475569;
+        }
+
+        .review-btn {
+            background: #059669;
+        }
+
+        .review-btn:hover {
+            background: #047857;
+        }
+
+        @media (max-width: 700px) {
+
+            .score-container {
+                flex-direction: column;
+            }
+
+            .box {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="box">
+
+        <h1>
+            AI Assignment Evaluation
+        </h1>
+
+        <p class="filename">
+
+            File:
+            <strong>
+                {{ filename }}
+            </strong>
+
+        </p>
+
+        <div class="status">
+
+            Assignment processed successfully.
+
+        </div>
+
+    </div>
+
+
+    <!-- EXTRACTED TEXT -->
+
+    <div class="box">
+
+        <h2>
+            Extracted Assignment Text
+        </h2>
+
+        <div class="text-box">
+
+            {{ text }}
+
+        </div>
+
+    </div>
+
+
+    <!-- AI RESULT -->
+
+    <div class="box">
+
+        <h2>
+            AI Evaluation Result
+        </h2>
+
+        <div class="score-container">
+
+
+            <div class="score-card">
+
+                <h3>
+                    Semantic Similarity
+                </h3>
+
+                <div class="score">
+
+                    {{ similarity }}%
+
+                </div>
+
+            </div>
+
+
+            <div class="score-card">
+
+                <h3>
+                    Concept Coverage
+                </h3>
+
+                <div class="score">
+
+                    {{ concept_coverage }}%
+
+                </div>
+
+            </div>
+
+
+            <div class="score-card">
+
+                <h3>
+                    AI Suggested Marks
+                </h3>
+
+                <div class="score">
+
+                    {{ marks }}
+                    /
+                    {{ max_marks }}
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- CONCEPTS -->
+
+        <div class="concept-box">
+
+            <h3>
+                Concepts Detected
+            </h3>
+
+            {% if found_concepts %}
+
+                <div class="concept-list">
+
+                    {% for concept in found_concepts %}
+
+                        <span class="concept">
+
+                            {{ concept }}
+
+                        </span>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <p class="no-concept">
+
+                    No important concepts were detected.
+
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- FACULTY NOTE -->
+
+        <div class="note">
+
+            <strong>
+                Faculty Review:
+            </strong>
+
+            AI-generated marks are only suggestions.
+            Faculty can verify the student's answer and
+            modify the final marks if required.
+
+        </div>
+
+    </div>
+
+
+    <!-- WORKFLOW -->
+
+    <div class="box">
+
+        <h2>
+            Evaluation Workflow
+        </h2>
+
+        <p class="workflow">
+
+            PDF Upload
+            →
+            Deep Learning OCR
+            →
+            Transformer-based Semantic Analysis
+            →
+            Similarity Score
+            →
+            Concept Coverage
+            →
+            AI Suggested Marks
+            →
+            Faculty Verification
+
+        </p>
+
+
+        <!-- BUTTONS -->
+
+        <div class="buttons">
+
+            <a
+                href="{{ url_for('review', evaluation_id=evaluation_id) }}"
+                class="btn review-btn"
+            >
+                Faculty Review
+            </a>
+
+
+            <a
+                href="{{ url_for('history') }}"
+                class="btn secondary-btn"
+            >
+                Evaluation History
+            </a>
+
+
+            <a
+                href="/evaluate"
+                class="btn"
+            >
+                Evaluate Another Assignment
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

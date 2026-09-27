@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Faculty Review</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7ff;
+            color: #1e293b;
+            padding: 35px 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .header,
+        .box {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            color: #315bea;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .filename {
+            color: #64748b;
+        }
+
+        /* PDF VIEWER */
+
+        .pdf-container {
+            width: 100%;
+            height: 650px;
+            border: 2px solid #dbe3f0;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f8fafc;
+        }
+
+        .pdf-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* AI SCORES */
+
+        .scores {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .score-card {
+            background: #eef2ff;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .score-card h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .score {
+            font-size: 32px;
+            font-weight: bold;
+            color: #315bea;
+        }
+
+        /* CONCEPTS */
+
+        .concept {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 8px 13px;
+            margin: 5px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .no-concept {
+            color: #64748b;
+        }
+
+        /* NOTE */
+
+        .note {
+            margin-top: 20px;
+            padding: 16px;
+            background: #fff7ed;
+            color: #9a3412;
+            border-radius: 10px;
+            line-height: 1.6;
+        }
+
+        /* FORM */
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        input[readonly] {
+            background: #f1f5f9;
+        }
+
+        /* BUTTONS */
+
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 13px 22px;
+            border: none;
+            border-radius: 8px;
+            background: #315bea;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .btn:hover {
+            background: #2448c7;
+        }
+
+        .back-btn {
+            background: #64748b;
+            margin-left: 10px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .scores {
+                grid-template-columns: 1fr;
+            }
+
+            .pdf-container {
+                height: 500px;
+            }
+
+            .header,
+            .box {
+                padding: 20px;
+            }
+
+            .back-btn {
+                margin-left: 0;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>
+            Faculty Review
+        </h1>
+
+        <p class="filename">
+            Assignment:
+            <strong>
+                {{ evaluation["filename"] }}
+            </strong>
+        </p>
+
+    </div>
+
+
+    <!-- ORIGINAL ASSIGNMENT PDF -->
+
+    <div class="box">
+
+        <h2>
+            Student Assignment
+        </h2>
+
+        <p style="color:#64748b; margin-bottom:15px;">
+            Faculty can view the original assignment below
+            before entering the final marks.
+        </p>
+
+        <div class="pdf-container">
+
+            <iframe
+                src="{{ url_for('uploaded_file', filename=evaluation['filename']) }}"
+                title="Student Assignment PDF">
+            </iframe>
+
+        </div>
+
+    </div>
+
+
+    <!-- AI EVALUATION -->
+
+    <div class="box">
+
+        <h2>
+            AI Evaluation Result
+        </h2>
+
+        <div class="scores">
+
+            <div class="score-card">
+
+                <h3>
+                    Semantic Similarity
+                </h3>
+
+                <div class="score">
+                    {{ evaluation["similarity"] }}%
+                </div>
+
+            </div>
+
+
+            <div class="score-card">
+
+                <h3>
+                    Concept Coverage
+                </h3>
+
+                <div class="score">
+                    {{ evaluation["concept_coverage"] }}%
+                </div>
+
+            </div>
+
+
+            <div class="score-card">
+
+                <h3>
+                    AI Suggested Marks
+                </h3>
+
+                <div class="score">
+                    {{ evaluation["suggested_marks"] }}
+                    /
+                    {{ evaluation["max_marks"] }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="note">
+
+            <strong>Faculty Review:</strong>
+
+            AI-generated marks are only suggestions.
+            Faculty should verify the student's assignment
+            and enter the final marks.
+
+        </div>
+
+    </div>
+
+
+    <!-- DETECTED CONCEPTS -->
+
+    <div class="box">
+
+        <h2>
+            Detected Concepts
+        </h2>
+
+        {% if found_concepts %}
+
+            {% for concept in found_concepts %}
+
+                <span class="concept">
+                    {{ concept }}
+                </span>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="no-concept">
+                No important concepts detected.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- FACULTY VERIFICATION -->
+
+    <div class="box">
+
+        <h2>
+            Faculty Verification
+        </h2>
+
+        <form
+            action="{{ url_for('save_review', evaluation_id=evaluation['id']) }}"
+            method="POST"
+        >
+
+            <label>
+                AI Suggested Marks
+            </label>
+
+            <input
+                type="text"
+                value="{{ evaluation['suggested_marks'] }} / {{ evaluation['max_marks'] }}"
+                readonly
+            >
+
+
+            <label>
+                Final Marks
+            </label>
+
+            <input
+                type="number"
+                name="final_marks"
+                min="0"
+                max="{{ evaluation['max_marks'] }}"
+                step="0.5"
+                value="{{ evaluation['final_marks'] if evaluation['final_marks'] is not none else '' }}"
+                placeholder="Enter final marks"
+                required
+            >
+
+
+            <label>
+                Faculty Feedback
+            </label>
+
+            <textarea
+                name="feedback"
+                placeholder="Enter faculty feedback..."
+            >{{ evaluation["feedback"] if evaluation["feedback"] else "" }}</textarea>
+
+
+            <button
+                type="submit"
+                class="btn"
+            >
+                Save Final Evaluation
+            </button>
+
+
+            <a
+                href="{{ url_for('history') }}"
+                class="btn back-btn"
+            >
+                Back to History
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
