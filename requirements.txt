@@ -1,0 +1,7 @@
+Flask
+PyMuPDF
+opencv-python
+easyocr
+torch
+transformers
+Werkzeug
